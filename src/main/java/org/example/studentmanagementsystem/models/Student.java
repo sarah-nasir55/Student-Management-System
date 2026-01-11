@@ -1,64 +1,74 @@
 package org.example.studentmanagementsystem.models;
 
-import java.util.List;
-import java.util.Map;
+import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
+
+@Entity
+@Table(name = "student")
+@Access(AccessType.FIELD)
 public class Student {
 
+    @Id
+    @Column(nullable = false, updatable = false)
     private String id;
+
+    @Column(nullable = false)
     private String name;
 
-    // Foreign keys
-    private String semesterId;
-    private List<Map<String, Object>> enrollments;
-    private List<PhoneNumber> phoneNumbers;
-    private List<Address> addresses;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "semester_id", nullable = false)
+    private Semester semester;
 
-    public String getId() {
-        return id;
-    }
+    @OneToMany(
+            mappedBy = "student",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Address> addresses = new ArrayList<>();
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    @OneToMany(
+            mappedBy = "student",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<PhoneNumber> phoneNumbers = new ArrayList<>();
 
-    public String getName() {
-        return name;
-    }
+    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
+    private List<Enrollment> enrollments = new ArrayList<>();
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSemesterId() {
-        return semesterId;
-    }
-
-    public void setSemesterId(String semesterId) {
-        this.semesterId = semesterId;
-    }
-
-    public List<Map<String, Object>> getEnrollments() {
+    public List<Enrollment> enrollments() {
         return enrollments;
     }
 
-    public void setEnrollments(List<Map<String, Object>> enrollments) {
-        this.enrollments = enrollments;
+
+    protected Student() {}
+
+    public Student(String id, String name, Semester semester) {
+        this.id = id;
+        this.name = name;
+        this.semester = semester;
     }
 
-    public List<PhoneNumber> getPhoneNumbers() {
-        return phoneNumbers;
+    public void addAddress(Address address) {
+        addresses.add(address);
     }
 
-    public void setPhoneNumbers(List<PhoneNumber> phoneNumbers) {
-        this.phoneNumbers = phoneNumbers;
+    public void addPhoneNumber(PhoneNumber phoneNumber) {
+        phoneNumbers.add(phoneNumber);
     }
 
-    public List<Address> getAddresses() {
-        return addresses;
+    public void update(String name, Semester semester) {
+        this.name = name;
+        this.semester = semester;
     }
 
-    public void setAddresses(List<Address> addresses) {
-        this.addresses = addresses;
-    }
+    /* Read-only getters */
+    public String id() { return id; }
+    public String name() { return name; }
+    public Semester semester() { return semester; }
+    public List<Address> addresses() { return addresses; }
+    public List<PhoneNumber> phoneNumbers() { return phoneNumbers; }
 }

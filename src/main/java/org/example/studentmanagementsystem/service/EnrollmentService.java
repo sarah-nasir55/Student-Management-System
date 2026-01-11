@@ -1,89 +1,68 @@
 package org.example.studentmanagementsystem.service;
 
-import org.example.studentmanagementsystem.exception.DatabaseOperationException;
+import org.example.studentmanagementsystem.dto.EnrollmentRequestDTO;
+import org.example.studentmanagementsystem.dto.EnrollmentResponseDTO;
 import org.example.studentmanagementsystem.exception.ResourceNotFoundException;
+import org.example.studentmanagementsystem.mapper.EnrollmentMapper;
 import org.example.studentmanagementsystem.models.Course;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.example.studentmanagementsystem.models.Enrollment;
+import org.example.studentmanagementsystem.models.Semester;
+import org.example.studentmanagementsystem.models.Student;
+import org.example.studentmanagementsystem.repository.CourseRepository;
+import org.example.studentmanagementsystem.repository.EnrollmentRepository;
+import org.example.studentmanagementsystem.repository.SemesterRepository;
+import org.example.studentmanagementsystem.repository.StudentRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.UUID;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class EnrollmentService {
 
-    private final JdbcTemplate jdbcTemplate;
+    private final EnrollmentRepository enrollmentRepository;
+    private final StudentRepository studentRepository;
+    private final CourseRepository courseRepository;
+    private final SemesterRepository semesterRepository;
+    private final EnrollmentMapper mapper;
 
-    public EnrollmentService(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public EnrollmentService(EnrollmentRepository enrollmentRepository,
+                             StudentRepository studentRepository,
+                             CourseRepository courseRepository,
+                             SemesterRepository semesterRepository,
+                             EnrollmentMapper mapper) {
+        this.enrollmentRepository = enrollmentRepository;
+        this.studentRepository = studentRepository;
+        this.courseRepository = courseRepository;
+        this.semesterRepository = semesterRepository;
+        this.mapper = mapper;
     }
 
-    public Course createEnrollment(String studentId, String courseId, String semesterId) {
-        try {
-            String enrollmentId = UUID.randomUUID().toString();
+    public EnrollmentResponseDTO createEnrollment(EnrollmentRequestDTO request) {
 
-            String sql = """
-                INSERT INTO enrollment (id, student_id, course_id, semester_id)
-                VALUES (?, ?, ?, ?)
-            """;
+        Student student = studentRepository.findById(request.getStudentId())
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Student not found with id: " + request.getStudentId()
+                        )
+                );
 
-            jdbcTemplate.update(
-                    sql,
-                    enrollmentId,
-                    studentId,
-                    courseId,
-                    semesterId
-            );
+        Course course = courseRepository.findById(request.getCourseId())
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Course not found with id: " + request.getCourseId()
+                        )
+                );
 
-            return jdbcTemplate.queryForObject(
-                    """
-                    SELECT id, name, credit_hours, instructor
-                    FROM course
-                    WHERE id = ?
-                    """,
-                    (rs, rowNum) -> {
-                        Course c = new Course();
-                        c.setId(rs.getString("id"));
-                        c.setName(rs.getString("name"));
-                        c.setCreditHours(rs.getInt("credit_hours"));
-                        c.setInstructor(rs.getString("instructor"));
-                        return c;
-                    },
-                    courseId
-            );
+        Semester semester = semesterRepository.findById(request.getSemesterId())
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Semester not found with id: " + request.getSemesterId()
+                        )
+                );
 
-        } catch (DataAccessException ex) {
-            throw new ResourceNotFoundException(
-                    "Invalid student, course, or semester ID"
-            );
-        }
+        Enrollment enrollment = mapper.toEntity(student, course, semester);
+        enrollmentRepository.save(enrollment);
+
+        return mapper.toDTO(enrollment);
     }
-//
-//    public List<Course> getAllEnrollments() {
-//        try {
-//            String sql = """
-//                SELECT DISTINCT
-//                    c.id,
-//                    c.name,
-//                    c.credit_hours,
-//                    c.instructor
-//                FROM enrollment e
-//                JOIN course c ON e.course_id = c.id
-//                ORDER BY c.name
-//            """;
-//
-//            return jdbcTemplate.query(sql, (rs, rowNum) -> {
-//                Course c = new Course();
-//                c.setId(rs.getString("id"));
-//                c.setName(rs.getString("name"));
-//                c.setCreditHours(rs.getInt("credit_hours"));
-//                c.setInstructor(rs.getString("instructor"));
-//                return c;
-//            });
-//
-//        } catch (DataAccessException ex) {
-//            throw new DatabaseOperationException("Failed to fetch enrollments");
-//        }
-//    }
 }

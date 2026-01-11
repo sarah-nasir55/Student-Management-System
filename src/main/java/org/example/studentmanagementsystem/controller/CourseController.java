@@ -1,6 +1,7 @@
 package org.example.studentmanagementsystem.controller;
 
-import org.example.studentmanagementsystem.models.Course;
+import jakarta.validation.Valid;
+import org.example.studentmanagementsystem.dto.CourseDTO;
 import org.example.studentmanagementsystem.service.CourseService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,24 +19,26 @@ public class CourseController {
     }
 
     @PostMapping
-    public ResponseEntity<Course> createCourse(@RequestBody Course course) {
+    public ResponseEntity<CourseDTO> createCourse(
+            @Valid @RequestBody CourseDTO course
+    ) {
         return ResponseEntity.ok(service.createCourse(course));
     }
 
     @GetMapping
-    public ResponseEntity<List<Course>> getAllCourses() {
+    public ResponseEntity<List<CourseDTO>> getAllCourses() {
         return ResponseEntity.ok(service.getAllCourses());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Course> getCourseById(@PathVariable String id) {
+    public ResponseEntity<CourseDTO> getCourseById(@PathVariable String id) {
         return ResponseEntity.ok(service.getCourseById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Course> updateCourse(
+    public ResponseEntity<CourseDTO> updateCourse(
             @PathVariable String id,
-            @RequestBody Course course
+            @Valid @RequestBody CourseDTO course
     ) {
         return ResponseEntity.ok(service.updateCourse(id, course));
     }

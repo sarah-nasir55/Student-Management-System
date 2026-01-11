@@ -1,43 +1,58 @@
 package org.example.studentmanagementsystem.models;
-import java.util.List;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "course")
+@Access(AccessType.FIELD)
 public class Course {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(nullable = false, updatable = false)
     private String id;
+
+    @Column(nullable = false)
     private String name;
+
+    @Column(name = "credit_hours", nullable = false)
     private int creditHours;
+
+    @Column(nullable = false)
     private String instructor;
 
-    public String getId() {
-        return id;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "semester_id", nullable = false)
+    private Semester semester;
 
-    public void setId(String id) {
+    protected Course() {}
+
+    public Course(String id,
+                  String name,
+                  int creditHours,
+                  String instructor,
+                  Semester semester) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
-    }
-
-    public int getCreditHours() {
-        return creditHours;
-    }
-
-    public void setCreditHours(int creditHours) {
         this.creditHours = creditHours;
-    }
-
-    public String getInstructor() {
-        return instructor;
-    }
-
-    public void setInstructor(String instructor) {
         this.instructor = instructor;
+        this.semester = semester;
     }
-}
 
+    public void update(String name,
+                       int creditHours,
+                       String instructor,
+                       Semester semester) {
+        this.name = name;
+        this.creditHours = creditHours;
+        this.instructor = instructor;
+        this.semester = semester;
+    }
+
+    /* Read-only getters */
+    public String id() { return id; }
+    public String name() { return name; }
+    public int creditHours() { return creditHours; }
+    public String instructor() { return instructor; }
+    public Semester semester() { return semester; }
+}

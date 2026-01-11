@@ -1,15 +1,14 @@
 package org.example.studentmanagementsystem.controller;
 
-import org.example.studentmanagementsystem.dto.EnrollmentRequest;
-import org.example.studentmanagementsystem.models.Course;
+import jakarta.validation.Valid;
+import org.example.studentmanagementsystem.dto.EnrollmentRequestDTO;
+import org.example.studentmanagementsystem.dto.EnrollmentResponseDTO;
 import org.example.studentmanagementsystem.service.EnrollmentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/enrollment")
+@RequestMapping("/enrollments")
 public class EnrollmentController {
 
     private final EnrollmentService service;
@@ -19,19 +18,9 @@ public class EnrollmentController {
     }
 
     @PostMapping
-    public ResponseEntity<Course> createEnrollment(
-            @RequestBody EnrollmentRequest request
+    public ResponseEntity<EnrollmentResponseDTO> createEnrollment(
+            @Valid @RequestBody EnrollmentRequestDTO request
     ) {
-        Course course = service.createEnrollment(
-                request.getStudentId(),
-                request.getCourseId(),
-                request.getSemesterId()
-        );
-        return ResponseEntity.ok(course);
+        return ResponseEntity.ok(service.createEnrollment(request));
     }
-
-//    @GetMapping
-//    public ResponseEntity<List<Course>> getAllEnrollments() {
-//        return ResponseEntity.ok(service.getAllEnrollments());
-//    }
 }

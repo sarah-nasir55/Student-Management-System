@@ -1,12 +1,13 @@
 package org.example.studentmanagementsystem.controller;
 
-import org.example.studentmanagementsystem.models.Student;
+import jakarta.validation.Valid;
+import org.example.studentmanagementsystem.dto.StudentRequestDTO;
+import org.example.studentmanagementsystem.dto.StudentResponseDTO;
 import org.example.studentmanagementsystem.service.StudentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/students")
@@ -19,26 +20,26 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
-        return ResponseEntity.ok(service.createStudent(student));
+    public ResponseEntity<StudentResponseDTO> createStudent(
+            @Valid @RequestBody StudentRequestDTO dto) {
+        return ResponseEntity.ok(service.createStudent(dto));
     }
 
     @GetMapping
-    public ResponseEntity<List<Student>> getAllStudents() {
+    public ResponseEntity<List<StudentResponseDTO>> getAllStudents() {
         return ResponseEntity.ok(service.getAllStudents());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> getStudent(@PathVariable String id) {
+    public ResponseEntity<StudentResponseDTO> getStudentById(@PathVariable String id) {
         return ResponseEntity.ok(service.getStudentById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Student> updateStudent(
+    public ResponseEntity<StudentResponseDTO> updateStudent(
             @PathVariable String id,
-            @RequestBody Student student
-    ) {
-        return ResponseEntity.ok(service.updateStudent(id, student));
+            @Valid @RequestBody StudentRequestDTO dto) {
+        return ResponseEntity.ok(service.updateStudent(id, dto));
     }
 
     @DeleteMapping("/{id}")

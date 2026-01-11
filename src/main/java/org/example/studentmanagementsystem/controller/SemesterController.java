@@ -1,6 +1,7 @@
 package org.example.studentmanagementsystem.controller;
 
-import org.example.studentmanagementsystem.models.Semester;
+import jakarta.validation.Valid;
+import org.example.studentmanagementsystem.dto.SemesterDTO;
 import org.example.studentmanagementsystem.service.SemesterService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,24 +19,26 @@ public class SemesterController {
     }
 
     @PostMapping
-    public ResponseEntity<Semester> createSemester(@RequestBody Semester semester) {
+    public ResponseEntity<SemesterDTO> createSemester(
+            @Valid @RequestBody SemesterDTO semester
+    ) {
         return ResponseEntity.ok(service.createSemester(semester));
     }
 
     @GetMapping
-    public ResponseEntity<List<Semester>> getAllSemesters() {
+    public ResponseEntity<List<SemesterDTO>> getAllSemesters() {
         return ResponseEntity.ok(service.getAllSemesters());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Semester> getSemesterById(@PathVariable String id) {
+    public ResponseEntity<SemesterDTO> getSemesterById(@PathVariable String id) {
         return ResponseEntity.ok(service.getSemesterById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Semester> updateSemester(
+    public ResponseEntity<SemesterDTO> updateSemester(
             @PathVariable String id,
-            @RequestBody Semester semester
+            @Valid @RequestBody SemesterDTO semester
     ) {
         return ResponseEntity.ok(service.updateSemester(id, semester));
     }
