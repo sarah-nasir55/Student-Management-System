@@ -4,6 +4,8 @@ import org.example.studentmanagementsystem.dto.StudentRequestDTO;
 import org.example.studentmanagementsystem.dto.StudentResponseDTO;
 import org.example.studentmanagementsystem.exception.ResourceNotFoundException;
 import org.example.studentmanagementsystem.mapper.StudentMapper;
+import org.example.studentmanagementsystem.models.Address;
+import org.example.studentmanagementsystem.models.PhoneNumber;
 import org.example.studentmanagementsystem.models.Semester;
 import org.example.studentmanagementsystem.models.Student;
 import org.example.studentmanagementsystem.repository.SemesterRepository;
@@ -63,7 +65,10 @@ public class StudentService {
         Semester semester = semesterRepository.findById(dto.getSemesterId())
                 .orElseThrow(() -> new ResourceNotFoundException("Semester not found"));
 
-        student.update(dto.getName(), semester);
+        student.update(
+                dto.getName(),
+                semester
+        );
 
         return mapper.toDTO(student);
     }

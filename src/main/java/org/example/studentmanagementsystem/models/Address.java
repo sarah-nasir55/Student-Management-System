@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 public class Address {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(nullable = false, updatable = false)
     private String id;
 

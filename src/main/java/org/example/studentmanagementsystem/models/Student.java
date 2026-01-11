@@ -1,10 +1,8 @@
 package org.example.studentmanagementsystem.models;
 
 import jakarta.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Entity
 @Table(name = "student")
@@ -24,8 +22,8 @@ public class Student {
 
     @OneToMany(
             mappedBy = "student",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
+            cascade = CascadeType.ALL, // ALL operations on Student propagate to Address
+            orphanRemoval = true // If an Address is removed from the list, it is DELETED from the database
     )
     private List<Address> addresses = new ArrayList<>();
 
@@ -39,17 +37,15 @@ public class Student {
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
     private List<Enrollment> enrollments = new ArrayList<>();
 
-    public List<Enrollment> enrollments() {
-        return enrollments;
-    }
-
-
     protected Student() {}
 
     public Student(String id, String name, Semester semester) {
         this.id = id;
         this.name = name;
         this.semester = semester;
+    }
+    public List<Enrollment> enrollments() {
+        return enrollments;
     }
 
     public void addAddress(Address address) {

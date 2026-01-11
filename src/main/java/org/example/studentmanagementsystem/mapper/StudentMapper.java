@@ -12,8 +12,6 @@ import java.util.UUID;
 @Component
 public class StudentMapper {
 
-    /* ================= CREATE ================= */
-
     public Student toEntity(StudentRequestDTO dto, Semester semester) {
 
         Student student = new Student(
@@ -46,8 +44,6 @@ public class StudentMapper {
 
         return student;
     }
-
-    /* ================= RESPONSE ================= */
 
     public StudentResponseDTO toDTO(Student student) {
 
@@ -99,8 +95,6 @@ public class StudentMapper {
                         })
                         .toList()
         );
-
-
         return dto;
     }
 }

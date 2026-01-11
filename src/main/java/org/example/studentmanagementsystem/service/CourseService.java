@@ -28,7 +28,6 @@ public class CourseService {
         this.mapper = mapper;
     }
 
-    // CREATE
     public CourseDTO createCourse(CourseDTO dto) {
 
         Semester semester = semesterRepository.findById(dto.getSemesterId())
@@ -44,7 +43,6 @@ public class CourseService {
         return mapper.toDTO(course);
     }
 
-    // READ
     @Transactional(readOnly = true)
     public List<CourseDTO> getAllCourses() {
         return courseRepository.findAll()
@@ -64,7 +62,6 @@ public class CourseService {
         return mapper.toDTO(course);
     }
 
-    // UPDATE
     public CourseDTO updateCourse(String id, CourseDTO dto) {
 
         Course course = courseRepository.findById(id)
@@ -93,7 +90,6 @@ public class CourseService {
         return mapper.toDTO(course);
     }
 
-    // DELETE
     public void deleteCourse(String id) {
         if (!courseRepository.existsById(id)) {
             throw new ResourceNotFoundException(

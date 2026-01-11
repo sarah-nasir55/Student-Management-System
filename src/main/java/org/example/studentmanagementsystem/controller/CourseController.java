@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/courses")
@@ -44,8 +45,10 @@ public class CourseController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCourse(@PathVariable String id) {
+    public ResponseEntity<Map<String, String>> deleteCourse(@PathVariable String id) {
         service.deleteCourse(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(
+                Map.of("message", "Course deleted successfully")
+        );
     }
 }
