@@ -27,7 +27,6 @@ public class PhoneNumber {
         this.student = student;
     }
 
-    /* Read-only getters */
     public String id() { return id; }
     public String phone() { return phone; }
     public Student student() { return student; }

@@ -31,7 +31,6 @@ public class Enrollment {
         this.semester = semester;
     }
 
-
     public String id() {
         return id;
     }

@@ -27,7 +27,6 @@ public class Address {
         this.student = student;
     }
 
-    /* Read-only getters */
     public String id() { return id; }
     public String address() { return address; }
     public Student student() { return student; }

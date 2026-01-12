@@ -49,7 +49,6 @@ public class Course {
         this.semester = semester;
     }
 
-    /* Read-only getters */
     public String id() { return id; }
     public String name() { return name; }
     public int creditHours() { return creditHours; }

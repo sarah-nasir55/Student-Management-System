@@ -61,7 +61,6 @@ public class Student {
         this.semester = semester;
     }
 
-    /* Read-only getters */
     public String id() { return id; }
     public String name() { return name; }
     public Semester semester() { return semester; }

@@ -35,7 +35,6 @@ public class Semester {
         this.semester = semester;
     }
 
-    /* Read-only getters */
     public String id() {
         return id;
     }
