@@ -2,8 +2,11 @@ package org.example.studentmanagementsystem.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.Data;
+
 import java.util.List;
 
+@Data
 public class StudentRequestDTO {
 
     @NotBlank(message = "Student name is required")
@@ -17,37 +20,6 @@ public class StudentRequestDTO {
 
     @NotEmpty(message = "At least one address is required")
     private List<AddressDTO> addresses;
-    
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSemesterId() {
-        return semesterId;
-    }
-
-    public void setSemesterId(String semesterId) {
-        this.semesterId = semesterId;
-    }
-
-    public List<PhoneNumberDTO> getPhoneNumbers() {
-        return phoneNumbers;
-    }
-
-    public void setPhoneNumbers(List<PhoneNumberDTO> phoneNumbers) {
-        this.phoneNumbers = phoneNumbers;
-    }
-
-    public List<AddressDTO> getAddresses() {
-        return addresses;
-    }
-
-    public void setAddresses(List<AddressDTO> addresses) {
-        this.addresses = addresses;
-    }
 }

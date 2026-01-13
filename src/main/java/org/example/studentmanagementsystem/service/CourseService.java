@@ -1,5 +1,6 @@
 package org.example.studentmanagementsystem.service;
 
+import lombok.AllArgsConstructor;
 import org.example.studentmanagementsystem.dto.CourseDTO;
 import org.example.studentmanagementsystem.exception.ResourceNotFoundException;
 import org.example.studentmanagementsystem.mapper.CourseMapper;
@@ -14,19 +15,12 @@ import java.util.List;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class CourseService {
 
     private final CourseRepository courseRepository;
     private final SemesterRepository semesterRepository;
     private final CourseMapper mapper;
-
-    public CourseService(CourseRepository courseRepository,
-                         SemesterRepository semesterRepository,
-                         CourseMapper mapper) {
-        this.courseRepository = courseRepository;
-        this.semesterRepository = semesterRepository;
-        this.mapper = mapper;
-    }
 
     public CourseDTO createCourse(CourseDTO dto) {
 

@@ -19,23 +19,19 @@ public class StudentMapper {
                 dto.getName(),
                 semester
         );
-
         // addresses
         dto.getAddresses().forEach(a ->
                 student.addAddress(
                         new Address(
-                                UUID.randomUUID().toString(),
                                 a.getAddress(),
                                 student
                         )
                 )
         );
-
         // phone numbers
         dto.getPhoneNumbers().forEach(p ->
                 student.addPhoneNumber(
                         new PhoneNumber(
-                                UUID.randomUUID().toString(),
                                 p.getPhone(),
                                 student
                         )
@@ -85,7 +81,7 @@ public class StudentMapper {
                             EnrollmentResponseDTO ed = new EnrollmentResponseDTO();
                             ed.setEnrollmentId(e.id());
 
-                            ed.setCourseId(e.course().id());
+                            ed.setCourseId(e.course().id()); //means e.getCourse().getId()
                             ed.setCourseName(e.course().name());
 
                             ed.setSemesterId(e.semester().id());

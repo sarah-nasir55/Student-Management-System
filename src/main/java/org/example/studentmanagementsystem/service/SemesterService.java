@@ -1,5 +1,6 @@
 package org.example.studentmanagementsystem.service;
 
+import lombok.AllArgsConstructor;
 import org.example.studentmanagementsystem.dto.SemesterDTO;
 import org.example.studentmanagementsystem.exception.ResourceNotFoundException;
 import org.example.studentmanagementsystem.mapper.SemesterMapper;
@@ -12,16 +13,11 @@ import java.util.List;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class SemesterService {
 
     private final SemesterRepository repository;
     private final SemesterMapper mapper;
-
-    public SemesterService(SemesterRepository repository,
-                           SemesterMapper mapper) {
-        this.repository = repository;
-        this.mapper = mapper;
-    }
 
     public SemesterDTO createSemester(SemesterDTO dto) {
         Semester semester = mapper.toEntity(dto);

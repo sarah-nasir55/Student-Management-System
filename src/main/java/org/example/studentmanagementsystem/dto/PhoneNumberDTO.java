@@ -2,7 +2,9 @@ package org.example.studentmanagementsystem.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.Data;
 
+@Data
 public class PhoneNumberDTO {
 
     @NotBlank(message = "Phone number is required")
@@ -12,11 +14,4 @@ public class PhoneNumberDTO {
     )
     private String phone;
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
 }

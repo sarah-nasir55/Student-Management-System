@@ -21,8 +21,7 @@ public class Address {
 
     protected Address() {}
 
-    public Address(String id, String address, Student student) {
-        this.id = id;
+    public Address(String address, Student student) {
         this.address = address;
         this.student = student;
     }

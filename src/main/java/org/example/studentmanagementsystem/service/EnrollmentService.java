@@ -1,5 +1,6 @@
 package org.example.studentmanagementsystem.service;
 
+import lombok.AllArgsConstructor;
 import org.example.studentmanagementsystem.dto.EnrollmentRequestDTO;
 import org.example.studentmanagementsystem.dto.EnrollmentResponseDTO;
 import org.example.studentmanagementsystem.exception.ResourceNotFoundException;
@@ -15,8 +16,11 @@ import org.example.studentmanagementsystem.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
+@AllArgsConstructor
 public class EnrollmentService {
 
     private final EnrollmentRepository enrollmentRepository;
@@ -25,18 +29,19 @@ public class EnrollmentService {
     private final SemesterRepository semesterRepository;
     private final EnrollmentMapper mapper;
 
-    public EnrollmentService(EnrollmentRepository enrollmentRepository,
-                             StudentRepository studentRepository,
-                             CourseRepository courseRepository,
-                             SemesterRepository semesterRepository,
-                             EnrollmentMapper mapper) {
-        this.enrollmentRepository = enrollmentRepository;
-        this.studentRepository = studentRepository;
-        this.courseRepository = courseRepository;
-        this.semesterRepository = semesterRepository;
-        this.mapper = mapper;
+    public List<EnrollmentResponseDTO> getEnrollments(){
+        return enrollmentRepository.findAll().stream().map(e -> {
+            EnrollmentResponseDTO dto = new EnrollmentResponseDTO();
+            dto.setEnrollmentId(e.id());
+            dto.setCourseId(e.course().id());
+            dto.setStudentId(e.student().id());
+            dto.setCourseName(e.course().name());
+            dto.setSemesterId(e.semester().id());
+            dto.setSemesterName(e.semester().semester());
+            dto.setStudentName(e.student().name());
+             return dto;
+        }).toList();
     }
-
     public EnrollmentResponseDTO createEnrollment(EnrollmentRequestDTO request) {
 
         Student student = studentRepository.findById(request.getStudentId())

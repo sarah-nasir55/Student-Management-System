@@ -7,6 +7,8 @@ import org.example.studentmanagementsystem.service.EnrollmentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/enrollments")
 public class EnrollmentController {
@@ -22,5 +24,12 @@ public class EnrollmentController {
             @Valid @RequestBody EnrollmentRequestDTO request
     ) {
         return ResponseEntity.ok(service.createEnrollment(request));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<EnrollmentResponseDTO>> getEnrollments()
+
+    {
+        return ResponseEntity.ok(service.getEnrollments());
     }
 }

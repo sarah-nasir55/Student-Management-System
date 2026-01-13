@@ -1,5 +1,6 @@
 package org.example.studentmanagementsystem.service;
 
+import lombok.AllArgsConstructor;
 import org.example.studentmanagementsystem.dto.StudentRequestDTO;
 import org.example.studentmanagementsystem.dto.StudentResponseDTO;
 import org.example.studentmanagementsystem.exception.ResourceNotFoundException;
@@ -17,19 +18,12 @@ import java.util.List;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class StudentService {
 
     private final StudentRepository studentRepository;
     private final SemesterRepository semesterRepository;
     private final StudentMapper mapper;
-
-    public StudentService(StudentRepository studentRepository,
-                          SemesterRepository semesterRepository,
-                          StudentMapper mapper) {
-        this.studentRepository = studentRepository;
-        this.semesterRepository = semesterRepository;
-        this.mapper = mapper;
-    }
 
     public StudentResponseDTO createStudent(StudentRequestDTO dto) {
 
@@ -65,10 +59,17 @@ public class StudentService {
         Semester semester = semesterRepository.findById(dto.getSemesterId())
                 .orElseThrow(() -> new ResourceNotFoundException("Semester not found"));
 
-        student.update(
-                dto.getName(),
-                semester
-        );
+        student.update(dto.getName(), semester);
+
+        List<Address> newAddresses = dto.getAddresses().stream()
+                .map(a -> new Address(a.getAddress(), student))
+                .toList();
+        student.replaceAddresses(newAddresses);
+
+        List<PhoneNumber> newPhones = dto.getPhoneNumbers().stream()
+                .map(p -> new PhoneNumber(p.getPhone(), student))
+                .toList();
+        student.replacePhoneNumbers(newPhones);
 
         return mapper.toDTO(student);
     }

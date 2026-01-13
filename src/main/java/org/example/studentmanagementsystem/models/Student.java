@@ -56,6 +56,15 @@ public class Student {
         phoneNumbers.add(phoneNumber);
     }
 
+    public void replaceAddresses(List<Address> newAddresses) {
+        this.addresses.clear();
+        this.addresses.addAll(newAddresses);
+    }
+
+    public void replacePhoneNumbers(List<PhoneNumber> newPhoneNumbers) {
+        this.phoneNumbers.clear();
+        this.phoneNumbers.addAll(newPhoneNumbers);
+    }
     public void update(String name, Semester semester) {
         this.name = name;
         this.semester = semester;

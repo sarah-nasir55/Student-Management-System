@@ -21,8 +21,7 @@ public class PhoneNumber {
 
     protected PhoneNumber() {}
 
-    public PhoneNumber(String id, String phone, Student student) {
-        this.id = id;
+    public PhoneNumber(String phone, Student student) {
         this.phone = phone;
         this.student = student;
     }
