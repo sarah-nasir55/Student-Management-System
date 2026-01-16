@@ -34,7 +34,7 @@ public class Student {
     )
     private List<PhoneNumber> phoneNumbers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "student",  cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Enrollment> enrollments = new ArrayList<>();
 
     protected Student() {}
